@@ -1,0 +1,27 @@
+def viajero(distancias, inicio, subconjunto):
+    if not subconjunto:
+        return distancias[inicio][0]
+
+    mejor_distancia = float('inf')
+
+    for ciudad in subconjunto:
+        restantes = [c for c in subconjunto if c != ciudad]
+        distancia_actual = distancias[inicio][ciudad] + viajero(distancias, ciudad, restantes)
+        if distancia_actual < mejor_distancia:
+            mejor_distancia = distancia_actual
+
+    return mejor_distancia
+
+
+distancias = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+ciudades = [1, 2, 3]
+inicio = 0
+
+resultado = viajero(distancias, inicio, ciudades)
+print("La menor distancia posible es:", resultado)
