@@ -1,0 +1,77 @@
+def leer_laberinto(nombre_archivo):
+    archivo = open(nombre_archivo, "r")
+    filas = int(archivo.readline().strip())
+    columnas = int(archivo.readline().strip())
+
+    laberinto = []
+    for i in range(filas):
+        linea = archivo.readline().strip().split(',')
+        laberinto.append(linea)
+    archivo.close()
+
+    return laberinto, filas, columnas
+
+
+def buscar_posicion(laberinto, simbolo):
+    for i in range(len(laberinto)):
+        for j in range(len(laberinto[0])):
+            if laberinto[i][j] == simbolo:
+                return (i, j)
+    return None
+
+
+def se_puede_mover(laberinto, visitado, x, y):
+    if x < 0 or y < 0 or x >= len(laberinto) or y >= len(laberinto[0]):
+        return False
+    if laberinto[x][y] in ('0', 'E', 'S') and not visitado[x][y]:
+        return True
+    return False
+
+
+def resolver_laberinto(laberinto):
+    entrada = buscar_posicion(laberinto, 'E')
+    salida = buscar_posicion(laberinto, 'S')
+
+    if entrada is None or salida is None:
+        print("No se encontró la entrada o la salida en el laberinto.")
+        return
+
+    direcciones = [(-1,0), (1,0), (0,-1), (0,1)]
+    pila = [(entrada, [entrada])]
+    visitado = [[False for _ in range(len(laberinto[0]))] for _ in range(len(laberinto))]
+
+    while pila:
+        actual, ruta = pila.pop()
+        x, y = actual
+
+        if actual == salida:
+            print("¡Se encontró una ruta desde E hasta S!")
+            print("Ruta:")
+            for paso in ruta:
+                print(paso)
+            print("Total de pasos:", len(ruta))
+            return
+
+        if not visitado[x][y]:
+            visitado[x][y] = True
+
+            for mov in direcciones:
+                nx = x + mov[0]
+                ny = y + mov[1]
+                if se_puede_mover(laberinto, visitado, nx, ny):
+                    nueva_ruta = ruta + [(nx, ny)]
+                    pila.append(((nx, ny), nueva_ruta))
+
+    print("No existe ninguna ruta desde E hasta S.")
+
+
+if __name__ == "__main__":
+    nombre_archivo = "Tarea8/entrada/entrada.txt"
+
+    laberinto, filas, columnas = leer_laberinto(nombre_archivo)
+
+    print("Laberinto leído del archivo:")
+    for fila in laberinto:
+        print(' '.join(fila))
+
+    resolver_laberinto(laberinto)
