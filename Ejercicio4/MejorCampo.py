@@ -45,6 +45,11 @@ for a, b, c in combinations(hull, 3):
         mayor = area
         mejor = (a, b, c)
 
+# Solo agregué estas líneas para mostrar en terminal
+print("Triángulo de mayor área encontrado:")
+for x, y in mejor:
+    print(f"{x} {y}")
+
 with open(os.path.join(ruta, "campo.out"), "w") as salida:
     for x, y in mejor:
         salida.write(f"{x} {y}\n")

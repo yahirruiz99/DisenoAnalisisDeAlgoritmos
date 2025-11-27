@@ -25,6 +25,11 @@ for i in range(n):
                 mayor_area = a
                 mejor_triangulo = (puntos[i], puntos[j], puntos[k])
 
+print("Triángulo de mayor área encontrado:")
+for x, y in mejor_triangulo:
+    print(f"{x} {y}")
+print(f"Área: {mayor_area}")
+
 with open(r"C:\Users\yairr\OneDrive\Escritorio\5Semestre\AnalisisAlgoritmos\Ejercicio4\campo.out", "w") as salida:
     for x, y in mejor_triangulo:
         salida.write(f"{x} {y}\n")
